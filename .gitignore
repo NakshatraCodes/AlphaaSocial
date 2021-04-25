@@ -1,0 +1,5 @@
+/server/node_modules
+/server/logs
+/server/package-lock.json
+/server/.env
+/server/coverage
