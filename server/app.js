@@ -15,7 +15,7 @@ const initiateRoutes = require("./modules");
 const { accessLogger } = require("./middlewares");
 const { constants } = require("./config");
 
-const { ENABLE_ACCESS_LOGS } = constants;
+const { ENABLE_ACCESS_LOGS, CLIENT_HOME_PAGE_URL } = constants;
 
 const app = express();
 
@@ -27,7 +27,14 @@ app.use(json({
     extended: true
 }));
 
-app.use(cors());
+// set up cors to allow us to accept requests from our client
+app.use(
+    cors({
+        origin: CLIENT_HOME_PAGE_URL, // allow to server to accept request from different origin
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        credentials: true // allow session cookie from browser to pass through
+    })
+);
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
