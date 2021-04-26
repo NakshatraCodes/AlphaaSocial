@@ -5,6 +5,9 @@ const style = (theme) => ({
     justifyContent: "center",
     height: "100vh",
     backgroundImage: "radial-gradient(#dbd9d9, #8f8f8f)",
+    '& a':{
+      textDecoration: 'none',
+    },
     "& button": {
       color: "#fff",
       background: "#0076b2",
