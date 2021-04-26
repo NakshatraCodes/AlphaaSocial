@@ -9,11 +9,14 @@ const { messages } = require(__basedir + "/config");
  * */
 const addUserData = async userObj => {
     const user = await users.getUser({ email: userObj.email });
+    const token = await createToken(user);
     if (user) {
-        throwBadRequestError(messages.USER_ALREADY_EXISTS);
+        return {
+            user,
+            token
+        };
     }
     const result = await users.createUser(userObj);
-    const token = await createToken(result);
     return {
         user: result,
         token
