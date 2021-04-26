@@ -1,5 +1,10 @@
 "use strict";
-const LinkedInStrategy = require('passport-linkedin').Strategy;
+const passport = require("passport");
+const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
+const { constants } = require(__basedir + "/config");
+const { LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET, LINKEDIN_CALLBACK_URL } = constants;
+const { addUserData } = require("../modules/user/actions");
+
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -17,17 +22,25 @@ passport.deserializeUser(function(obj, done) {
 });
 
 passport.use(new LinkedInStrategy({
-        consumerKey: "86i87bpwt0q2dg",
-        consumerSecret: "y9EWPl1tE2P62bM4",
-        callbackURL: "http://127.0.0.1:3000/auth/linkedin/callback"
+        clientID: LINKEDIN_CLIENT_ID,
+        clientSecret: LINKEDIN_CLIENT_SECRET,
+        callbackURL: LINKEDIN_CALLBACK_URL,
+        scope: ['r_emailaddress', 'r_liteprofile']
     },
     function(token, tokenSecret, profile, done) {
         // asynchronous verification, for effect...
-        process.nextTick(function () {
+        process.nextTick(async function () {
             // To keep the example simple, the user's LinkedIn profile is returned to
             // represent the logged-in user.  In a typical application, you would want
             // to associate the LinkedIn account with a user record in your database,
             // and return that user instead.
+            const { displayName, photos, emails } = profile;
+            const userData = {
+                email: emails[0].value,
+                name: displayName,
+                avatar: photos[photos.length-1].value
+            }
+            await addUserData(userData);
             return done(null, profile);
         });
     }

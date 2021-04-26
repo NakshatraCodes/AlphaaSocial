@@ -31,7 +31,7 @@ const authenticateUserWithToken = async (req, res, next) => {
             try {
                 const user = await verify(token, SECRET);
                 // eslint-disable-next-line
-                req.user = user._doc;
+                req.user = user;
                 next();
             } catch (e) {
                 throwUnAuthenticatedError(e.message);

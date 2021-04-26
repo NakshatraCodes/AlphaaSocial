@@ -4,7 +4,7 @@
  * @description This file contains routes for user entity
  * */
 const { authenticateUserWithToken } = require(__basedir + "/middlewares");
-const { getUser, addUser } = require('./controller');
+const { getUser } = require('./controller');
 
 module.exports = router => {
 
@@ -35,28 +35,7 @@ module.exports = router => {
      *              description: Internal Error
      *
      */
-    router.get("/users",
+    router.get("/user",
         authenticateUserWithToken,
         getUser);
-
-    router.post("/users", addUser);
-
 };
-
-/**
- * Add model definitions
- * @swagger
- * definitions:
- *  UserRes:
- *      type: object
- *      properties:
- *          _id:
- *              type: string
- *              example: 1233asdad1313
- *          name:
- *              type: string
- *              example: abc
- *          email:
- *              type: string
- *              example: abc@def.com
- */

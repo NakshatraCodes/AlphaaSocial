@@ -20,13 +20,11 @@ const getUser = async (req, res, next) => {
     try {
         const { _id: userId } = req.user;
         const data = await getUserData(userId);
-        res.status(SUCCESS.CODE).send({ data });
-        next();
+        return res.status(SUCCESS.CODE).send({ data });
     } catch (error) {
-        res.status(error.code).send({
+        return res.status(error.code).send({
             error: error.message
         });
-        next();
     }
 };
 
