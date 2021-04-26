@@ -43,7 +43,7 @@ module.exports = router => {
         authenticateUserWithToken,
         getTodo);
 
-    router.post("/todos",
+    router.post("/todo",
         authenticateUserWithToken,
         addTodo);
 
@@ -66,11 +66,8 @@ module.exports = router => {
      *      properties:
      *          _id:
      *              type: string
-     *              example: 1233asdad1313
-     *          name:
+     *              example: my first todo
+     *          description:
      *              type: string
-     *              example: abc
-     *          email:
-     *              type: string
-     *              example: abc@def.com
+     *              example: go to the gym
      */
