@@ -26,7 +26,7 @@ process.on("exit", code => {
     console.log(`Exiting with code: ${code}`);
 });
 
-server.listen(PORT, err => {
+server.listen(PORT || 8443, err => {
     if (err) {
         return console.log(`Something went wrong: \n${err}`);
     }

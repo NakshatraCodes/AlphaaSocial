@@ -5,13 +5,7 @@
  * our defined constants
  * */
 
-const { config } = require("dotenv");
-
-const dotEnv = config();
-
-if (dotEnv.error) {
-    throw dotEnv.error;
-}
+require('dotenv').config();
 
 const {
     PORT,
