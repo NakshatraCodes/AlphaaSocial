@@ -40,8 +40,8 @@ passport.use(new LinkedInStrategy({
                 name: displayName,
                 avatar: photos[photos.length-1].value
             }
-            await addUserData(userData);
-            return done(null, userData);
+            const userInfo= await addUserData(userData);
+            return done(null, userInfo.user);
         });
     }
 ));

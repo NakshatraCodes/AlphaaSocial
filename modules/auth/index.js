@@ -14,7 +14,7 @@ module.exports = router => {
     // When logout, redirect to client
     router.get("/logout", (req, res) => {
         req.logout();
-        res.redirect('/todos');
+        res.redirect('/');
     });
 
     // GET /auth/linkedin
