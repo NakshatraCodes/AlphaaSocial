@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest --config jest.config.js --coverage",
     "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
     "lint": "eslint -c .eslintrc config/**/*.js db/**/*.js errors/**/*.js modules/**/*.js lib/**/*.js app.js index.js server.js"
   },
   "repository": {
