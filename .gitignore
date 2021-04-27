@@ -1,8 +1,8 @@
-/server/node_modules
-/server/logs
-/server/package-lock.json
-/server/.env
-/server/coverage
+node_modules
+logs
+package-lock.json
+.env
+coverage
 /client/node_modules
 /client/package-lock.json
 

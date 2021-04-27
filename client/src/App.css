@@ -8,6 +8,10 @@
   background: rgba(230, 231, 233, 0.473);
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  word-wrap: break-word;
+}
+.react-grid-item h3 {
+  padding-top: 10px;
 }
 .react-grid-item span {
   display: inline-block;

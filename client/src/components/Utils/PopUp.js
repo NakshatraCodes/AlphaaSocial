@@ -8,21 +8,21 @@ import {
 } from "@material-ui/core";
 import { Clear } from "@material-ui/icons";
 
-const PopUp = (props) => {
+const PopUp = ({open,close,user}) => {
   const classes = useStyles(style)();
 
   return (
     <Dialog className={classes.modalWidth} 
-      open={props.open} 
+      open={open} 
       disableEscapeKeyDown={true} 
       disableBackdropClick={true}
-      onClose={props.close}
+      onClose={close}
     >
       <DialogContent className={classes.dialogContent}>
-        <IconButton onClick={props.close} aria-label="Close" className={classes.cancelCrossIcon}>
+        <IconButton onClick={close} aria-label="Close" className={classes.cancelCrossIcon}>
           <Clear />
         </IconButton>
-         <h4>Hi User</h4>
+         <h4>Hi {user.name}</h4>
         <p>Welcome to your todo board.</p>
       </DialogContent>
     </Dialog>

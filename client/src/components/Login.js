@@ -1,25 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useStyles from "../custom-hooks/useStyles";
-import style from "../assets/style"
-import {Button} from '@material-ui/core'
-import logo from '../assets/images/logo.png';
-import {fetchAPI } from '../services/api'
+import style from "../assets/style";
+import { Button } from "@material-ui/core";
+import logo from "../assets/images/logo.png";
 import { useHistory } from "react-router-dom";
 const Login = (props) => {
   const classes = useStyles(style)();
   let history = useHistory();
-  const submitLogin = () =>{
-    // history.push("http://localhost:8443/api/v1/auth/linkedin");
-    props.loginSession('token');
-     history.push('/todo')
-  }
+  useEffect(() => {
+    if (props.location && props.location.search) {
+      const session = props.location.search.split("=");
+      history.push("/todo");
+      props.loginSession(session[1]);
+    }
+  }, []);
   return (
     <div className={classes.signInDiv}>
-      {/* <a href="http://127.0.0.1:8443/api/v1/auth/linkedin" > */}
-        <Button onClick={submitLogin} >
-          <img src={logo}/>Sign in with LinkedIn
+      <a href="http://localhost:8443/api/v1/auth/linkedin">
+        <Button>
+          <img alt="linkedin logo" src={logo} />
+          Sign in with LinkedIn
         </Button>
-      {/* </a> */}
+      </a>
     </div>
   );
 };
