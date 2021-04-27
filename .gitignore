@@ -3,3 +3,6 @@
 /server/package-lock.json
 /server/.env
 /server/coverage
+/client/node_modules
+/client/package-lock.json
+
