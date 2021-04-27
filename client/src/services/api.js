@@ -1,42 +1,78 @@
-export function getURL(path = "") {
-  return `http://localhost:8443/api/v1${path}`;
-}
+const axios = require("axios");
 
-
-export async function fetchAPI(path, req) {
-  let header = await requestHeader(
-    "GET",
-    req && req.headers && req.headers.Authorization
-      ? req.headers.Authorization
-      : null
-  );
-  const requestUrl = await getURL(path);
-  const response = await fetch(requestUrl, header);
-  
-  return response;
-}
-
-export async function requestHeader(method, token) {
-  let header = {
-    method: method,
-    headers: {
-      accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:8443"
+const instanceUrl = axios.create({
+  baseURL: "/api/v1",
+  transformRequest: [
+    function (data, headers) {
+      headers["authorization"] = "Bearer " + sessionStorage["authToken"];
+      return JSON.stringify(data);
     },
-  };
-  if (token) {
-    header.headers["Authorization"] = token;
-  }
+  ],
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
-  return header;
+/**
+ * for fetching data 'GET
+ * @param {} path 
+ * @returns 
+ */
+export async function fetchAPI(path) {
+  return await instanceUrl
+    .get(path)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      return err;
+    });
 }
+ /**
+  * for submit data 'POST'
+  * @param {*} path 
+  * @param {*} postData 
+  * @returns 
+  */
+export async function postAPI(path, postData) {
+return await instanceUrl
+    .post(path,postData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+}
+/**
+ * delete entry  'DELETE'
+ * @param {*} path 
+ * @returns 
+ */
+export async function deleteAPI(path) {
+return await instanceUrl
+    .delete(`${path}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      return err;
+    });
 
-// export async function postAPI(path, postData, token = null) {
-//   const requestUrl = getStrapiURL(path);
-//   let header = await requestHeader("POST", token);
-//   header.body = JSON.stringify(postData);
-//   const response = await fetch(requestUrl, header);
-//   const data = await response.json();
-//   return data;
-// }
+}
+ /**
+  * modify entry api 'PUT'
+  * @param {*} path 
+  * @returns 
+  */
+export async function updateAPI(path,putData) {
+return await instanceUrl
+    .put(`${path}`,putData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((err) => {
+      return err;
+    });
+
+}

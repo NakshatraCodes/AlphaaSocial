@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   TextField,
   Grid,
@@ -12,14 +12,26 @@ import {
 import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style";
 import { Clear } from "@material-ui/icons";
+import { fetchAPI } from "../../services/api";
 
 const AddTask = (props) => {
   const classes = useStyles(style)();
-  const [task, setTask] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [isDisable, setIsDisable] = useState(false);
-  const [isError, setIsError] = useState({ task: false, description: false });
+  const [isError, setIsError] = useState({ title: false, description: false });
   const CheckIfNotEmpty = (text) => !(text == null || /^\s*$/.test(text));
+    useEffect(() => {
+    if(props.id){
+      fetchAPI(`/todo/${props.id}`)
+      .then((res) => {
+       setTitle(res.data.title);
+       setDescription(res.data.description);
+      })
+      .catch((err) => console.log(err));
+    }
+  }, [props.id]);
+   
   const checkEnable = (input) => {
     !CheckIfNotEmpty(input.value)
       ? setValue(input, true)
@@ -40,31 +52,32 @@ const AddTask = (props) => {
       disableEscapeKeyDown={true}
       disableBackdropClick={true}
       onClose={props.close}
+      key={props.id}
     >
       <DialogTitle className={classes.dialogTitle}>Add Task</DialogTitle>
       <DialogContent className={classes.dialogContent}>
-            <IconButton
-            onClick={props.close}
-            aria-label="Close"
-            className={classes.cancelCrossIcon}
-            >
-            <Clear />
-            </IconButton>
-            <Grid container>
+        <IconButton
+          onClick={props.close}
+          aria-label="Close"
+          className={classes.cancelCrossIcon}
+        >
+          <Clear />
+        </IconButton>
+        <Grid container>
           <Grid item xs={12} sm={12} md={12}>
             <TextField
-              name="task"
-              value={task}
+              name="title"
+              value={title}
               placeholder="Add Task"
               type="text"
-              helperText={isError.task ? "Please enter task":""}
-              error={isError.task}
+              helperText={isError.title ? "Please enter task" : ""}
+              error={isError.title}
               onChange={(e) => {
-                setTask(e.target.value);
+                setTitle(e.target.value);
                 checkEnable(e.target);
               }}
               onBlur={(e) => {
-                setTask(e.target.value);
+                setTitle(e.target.value);
                 checkEnable(e.target);
               }}
             />
@@ -72,7 +85,7 @@ const AddTask = (props) => {
           <Grid item xs={12} sm={12} md={12}>
             <TextField
               value={description}
-              helperText={isError.description ?"Please enter description" :""}
+              helperText={isError.description ? "Please enter description" : ""}
               name="description"
               placeholder="Description"
               error={isError.description}
@@ -90,10 +103,21 @@ const AddTask = (props) => {
       </DialogContent>
       <DialogActions>
         <Grid className={classes.actionButton} item xs={12} sm={12} md={12}>
-          <Button onClick={props.close} className={"buttonCancel"} type="button">
+          <Button
+            onClick={props.close}
+            className={"buttonCancel"}
+            type="button"
+          >
             Cancel
           </Button>
-          <Button className={"buttonDefault"} onClick={(e)=>props.addTask(e,{task,description})} type="submit"  disabled={isError.task || isError.description || !task || !description} >
+          <Button
+            className={"buttonDefault"}
+            onClick={(e) => props.addTask(e, { title, description })}
+            type="submit"
+            disabled={
+              isError.title || isError.description || !title || !description
+            }
+          >
             Add
           </Button>
         </Grid>
