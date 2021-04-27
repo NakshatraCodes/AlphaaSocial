@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import useStyles from "../custom-hooks/useStyles";
-import style from "../assets/style";
+import useStyles from "../../custom-hooks/useStyles";
+import style from "../../assets/style";
 import { Button } from "@material-ui/core";
 import logo from "../assets/images/logo.png";
 import { useHistory } from "react-router-dom";

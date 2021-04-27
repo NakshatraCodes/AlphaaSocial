@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Grid,
@@ -21,17 +21,17 @@ const AddTask = (props) => {
   const [isDisable, setIsDisable] = useState(false);
   const [isError, setIsError] = useState({ title: false, description: false });
   const CheckIfNotEmpty = (text) => !(text == null || /^\s*$/.test(text));
-    useEffect(() => {
-    if(props.id){
+  useEffect(() => {
+    if (props.id) {
       fetchAPI(`/todo/${props.id}`)
-      .then((res) => {
-       setTitle(res.data.title);
-       setDescription(res.data.description);
-      })
-      .catch((err) => console.log(err));
+        .then((res) => {
+          setTitle(res.data.title);
+          setDescription(res.data.description);
+        })
+        .catch((err) => console.log(err));
     }
   }, [props.id]);
-   
+
   const checkEnable = (input) => {
     !CheckIfNotEmpty(input.value)
       ? setValue(input, true)
@@ -44,7 +44,10 @@ const AddTask = (props) => {
     });
     setIsDisable(!isDisable);
   };
-
+  const clearState = () => {
+    setDescription("");
+    setTitle("");
+  };
   return (
     <Dialog
       className={classes.modalWidth}
@@ -53,6 +56,7 @@ const AddTask = (props) => {
       disableBackdropClick={true}
       onClose={props.close}
       key={props.id}
+      onEntered={clearState}
     >
       <DialogTitle className={classes.dialogTitle}>Add Task</DialogTitle>
       <DialogContent className={classes.dialogContent}>
