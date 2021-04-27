@@ -32,11 +32,7 @@ const AddTask = (props) => {
     });
     setIsDisable(!isDisable);
   };
-  const addTask = (event) =>{
-   event.preventDefault();
-	console.log('task: ', task,', Description: ', description);
-    props.close();
-  }
+
   return (
     <Dialog
       className={classes.modalWidth}
@@ -97,7 +93,7 @@ const AddTask = (props) => {
           <Button onClick={props.close} className={"buttonCancel"} type="button">
             Cancel
           </Button>
-          <Button className={"buttonDefault"} onClick={(e)=>addTask(e)} type="submit"  disabled={isError.task || isError.description || !task || !description} >
+          <Button className={"buttonDefault"} onClick={(e)=>props.addTask(e,{task,description})} type="submit"  disabled={isError.task || isError.description || !task || !description} >
             Add
           </Button>
         </Grid>

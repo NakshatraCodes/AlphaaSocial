@@ -1,5 +1,4 @@
 import Dashboard from './Dashboard/Dashboard';
-import DragableItem from './Dashboard/DragableItem';
 import TodoList from './Dashboard/TodoList';
 import AddTask from './Dashboard/AddTask';
 import PopUp from './Utils/PopUp';
@@ -16,6 +15,5 @@ Login,
 Routing,
 Header,
 AddTask,
-DragableItem,
 TodoList
 }

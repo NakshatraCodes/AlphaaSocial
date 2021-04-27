@@ -9,13 +9,14 @@ const Login = (props) => {
   const classes = useStyles(style)();
   let history = useHistory();
   const submitLogin = () =>{
-     history.push("http://localhost:8443/api/v1/auth/linkedin");
-    //props.loginSession('token');
+    // history.push("http://localhost:8443/api/v1/auth/linkedin");
+    props.loginSession('token');
+     history.push('/todo')
   }
   return (
     <div className={classes.signInDiv}>
-      {/* <a href="http://localhost:8443/api/v1/auth/linkedin" > */}
-        <Button onClick={()=>props.loginSession('token')}>
+      {/* <a href="http://127.0.0.1:8443/api/v1/auth/linkedin" > */}
+        <Button onClick={submitLogin} >
           <img src={logo}/>Sign in with LinkedIn
         </Button>
       {/* </a> */}

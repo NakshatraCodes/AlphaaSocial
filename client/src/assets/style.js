@@ -138,6 +138,9 @@ const style = (theme) => ({
       width: '100%',
       margin:'15px 0px',
     }
+  },
+  todoList:{
+    padding:'20px 0px'
   }
 });
 
