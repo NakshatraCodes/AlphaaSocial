@@ -41,7 +41,7 @@ passport.use(new LinkedInStrategy({
                 avatar: photos[photos.length-1].value
             }
             await addUserData(userData);
-            return done(null, profile);
+            return done(null, userData);
         });
     }
 ));

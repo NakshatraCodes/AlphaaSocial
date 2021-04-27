@@ -1,7 +1,6 @@
 const passport = require("passport");
 require("../../services/linkedin");
-const { constants } = require(__basedir + "/config");
-const { CLIENT_HOME_PAGE_URL } = constants;
+const { createToken } = require(__basedir + "/middlewares");
 
 module.exports = router => {
     // when login failed, send failed msg
@@ -15,7 +14,7 @@ module.exports = router => {
     // When logout, redirect to client
     router.get("/logout", (req, res) => {
         req.logout();
-        res.redirect(CLIENT_HOME_PAGE_URL);
+        res.redirect('/todos');
     });
 
     // GET /auth/linkedin
@@ -35,10 +34,12 @@ module.exports = router => {
     //   request.  If authentication fails, the user will be redirected back to the
     //   login page.  Otherwise, the primary route function function will be called,
     //   which, in this example, will redirect the user to the home page.
-    router.get('/auth/linkedin/callback',
-        passport.authenticate('linkedin', {
-            successRedirect: CLIENT_HOME_PAGE_URL,
-            failureRedirect: '/login/failed'
-        }),
-    );
+    router.get('/auth/linkedin/callback', 
+        passport.authenticate('linkedin', { failureRedirect: '/login/failed' }),
+        async function(req, res) {
+            const user = req.user;
+            const token = await createToken(user);
+            const redirecturl = `/login?token=${token}`;
+            res.redirect(redirecturl);
+        });
 }
