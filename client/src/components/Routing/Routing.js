@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Login, Dashboard } from "./index";
-import { AuthService } from "../services/authService";
-import { fetchAPI } from "../services/api";
+import { Login, Dashboard } from "../index";
+import { AuthService } from "../../services/authService";
+import { fetchAPI } from "../../services/api";
 
 const Routing = (props) => {
   const [isLoggedIn, setLoggedIn] = useState(AuthService.isLoggedIn());
