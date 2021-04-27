@@ -6,6 +6,7 @@
  * The app instance along with the express router are exposed to be used by HTTP server.
  * */
 const express = require("express");
+const path = require("path");
 const cors = require("cors");
 const { json, urlencoded } = require("body-parser");
 const passport = require("passport");
@@ -57,6 +58,13 @@ app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     next();
 });
+
+if(process.env.ENV="production"){
+    app.use(express.static(path.resolve('client', 'build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve('client', 'build', 'index.html'));
+    });
+}
 
 // For serving files statically from "public" directory
 app.use(express.static("public"));
