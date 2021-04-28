@@ -16,7 +16,7 @@ const initiateRoutes = require("./modules");
 const { accessLogger } = require("./middlewares");
 const { constants } = require("./config");
 
-const { ENABLE_ACCESS_LOGS, CLIENT_HOME_PAGE_URL } = constants;
+const { ENABLE_ACCESS_LOGS } = constants;
 
 const app = express();
 
@@ -29,13 +29,7 @@ app.use(json({
 }));
 
 // set up cors to allow us to accept requests from our client
-app.use(
-    cors({
-        origin: CLIENT_HOME_PAGE_URL, // allow to server to accept request from different origin
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        credentials: true // allow session cookie from browser to pass through
-    })
-);
+app.use(cors());
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -49,26 +43,24 @@ if (ENABLE_ACCESS_LOGS) {
     router.use(accessLogger);
 }
 
+app.use(express.static(path.join(__dirname, 'client/build'), {
+    index: ["index.html"]
+}));
+
 app.use('/api/v1', router);
 
 app.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Access", "application/json");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     next();
 });
 
-if(process.env.ENV="production"){
-    app.use(express.static(path.resolve('client', 'build')));
-}
-
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve('client', 'build', 'index.html'));
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
-// For serving files statically from "public" directory
-app.use(express.static("public"));
+app.use("*", express.static("client/build"));
+
 
 module.exports = {
     app,
