@@ -3,20 +3,25 @@
  * @summary Defines user schema
  * */
 
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     name: {
         type: String
     },
     email: {
-        type: String
+        type: String,
+        required: true
     },
     avatar: {
         type: String
+    },
+    todos: {
+        type: Schema.Types.ObjectId,
+        ref: "Todos"
     }
 });
 
 module.exports = {
-    Users: mongoose.model("Users", userSchema)
+    Users: model("Users", userSchema)
 };

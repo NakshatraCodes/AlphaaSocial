@@ -25,7 +25,7 @@ const getTodo = (condition = {}, selection = {}) => Todos.findOne(condition, sel
  * @param {string} condition Condition by which todo will be fetched
  * @param {object} [selection] Object with DB projection
  * */
- const getTodos = (condition = {}, selection = {}) => Todos.find(condition, selection).lean();
+const getTodos = (condition = {}, selection = {}) => Todos.find(condition, selection).lean();
 
 /**
  * Method to create todo in DB

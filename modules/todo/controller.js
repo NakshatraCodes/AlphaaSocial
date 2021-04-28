@@ -19,7 +19,7 @@ const { SUCCESS } = constants;
 const getTodo = async (req, res, next) => {
     try {
         const { todoId } = req.params;
-        const data = await getTodoData(todoId);
+        const data = await getTodoData(todoId, { user: req.user._id });
         return res.status(SUCCESS.CODE).send({ data });
     } catch (error) {
         return res.status(error.code).send({
@@ -36,7 +36,8 @@ const getTodo = async (req, res, next) => {
  * */
 const addTodo = async (req, res, next) => {
     try {
-        const todoObj = req.body;
+        let todoObj = req.body;
+        todoObj.user = req.user._id;
         const data = await addTodoData(todoObj);
         return res.status(SUCCESS.CODE).send({ data });
     } catch (error) {
