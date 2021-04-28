@@ -12,7 +12,6 @@ import {
 import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style";
 import { Clear } from "@material-ui/icons";
-import { fetchAPI } from "../../services/api";
 
 const AddTask = (props) => {
   const classes = useStyles(style)();
@@ -21,16 +20,13 @@ const AddTask = (props) => {
   const [isDisable, setIsDisable] = useState(false);
   const [isError, setIsError] = useState({ title: false, description: false });
   const CheckIfNotEmpty = (text) => !(text == null || /^\s*$/.test(text));
+
   useEffect(() => {
-    if (props.id) {
-      fetchAPI(`/todo/${props.id}`)
-        .then((res) => {
-          setTitle(res.data.title);
-          setDescription(res.data.description);
-        })
-        .catch((err) => console.log(err));
+    if (props.id && props.listData) {
+      setTitle(props.listData.current.title);
+      setDescription(props.listData.current.description);
     }
-  }, [props.id]);
+  }, [props.id, props.listData]);
 
   const checkEnable = (input) => {
     !CheckIfNotEmpty(input.value)
@@ -48,6 +44,7 @@ const AddTask = (props) => {
     setDescription("");
     setTitle("");
   };
+
   return (
     <Dialog
       className={classes.modalWidth}
@@ -56,7 +53,8 @@ const AddTask = (props) => {
       disableBackdropClick={true}
       onClose={props.close}
       key={props.id}
-      onEntered={clearState}
+      onExit={clearState}
+
     >
       <DialogTitle className={classes.dialogTitle}>Add Task</DialogTitle>
       <DialogContent className={classes.dialogContent}>
@@ -71,7 +69,7 @@ const AddTask = (props) => {
           <Grid item xs={12} sm={12} md={12}>
             <TextField
               name="title"
-              value={title}
+              defaultValue={title}
               placeholder="Add Task"
               type="text"
               helperText={isError.title ? "Please enter task" : ""}
@@ -88,7 +86,7 @@ const AddTask = (props) => {
           </Grid>
           <Grid item xs={12} sm={12} md={12}>
             <TextField
-              value={description}
+              defaultValue={description}
               helperText={isError.description ? "Please enter description" : ""}
               name="description"
               placeholder="Description"

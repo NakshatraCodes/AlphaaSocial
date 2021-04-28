@@ -4,13 +4,16 @@ import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style"
 import user from '../../assets/images/user.jpg';
 import { fetchAPI } from "../../services/api";
+import { useHistory } from "react-router-dom";
 
 const Header = (props) => {
   const classes = useStyles(style)();
+  let history = useHistory();
+
   const onLogout=()=>{
     fetchAPI(`/logout`).then((res) => {
+      history.push('/login')
       props.logoutSession();
-      props.history.push('/login')
 
     });
   }

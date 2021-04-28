@@ -12,7 +12,7 @@ const Dashboard = (props) => {
   const [id, setId] = useState(null);
   const user = JSON.parse(sessionStorage.getItem("userData"));
   const [taskList, setTaskList] = useState([]);
-
+  let listData= React.useRef([]);
   const classes = useStyles(style)();
   useEffect(() => {
     fetchAPI(`/todos`)
@@ -56,8 +56,16 @@ const Dashboard = (props) => {
     }
   };
   const openTaskEditModal = (id) => {
-    setId(id);
-    setOpenTask(true);
+      if (id) {
+        fetchAPI(`/todo/${id}`)
+          .then((res) => {
+            listData.current = res.data;
+            setId(id);
+            setOpenTask(true);
+          })
+          .catch((err) => console.log(err));
+      }
+    
   };
   return (
     <div>
@@ -80,6 +88,7 @@ const Dashboard = (props) => {
         addTask={addTask}
         open={openTask}
         id={id}
+        listData={listData}
         close={() => setOpenTask(false)}
       />
       <PopUp open={props.open} close={props.close} user={user} />
