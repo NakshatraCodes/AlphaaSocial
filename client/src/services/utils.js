@@ -1,3 +1,10 @@
+let idCounter = 0;
+
+export const getId = (idCounter) => {
+  idCounter++;
+  return idCounter.toString();
+};
+
 export const getDimensions = (
   task, i,
   dimensions = { x: 0, y: 0, w: 3, h: 3}

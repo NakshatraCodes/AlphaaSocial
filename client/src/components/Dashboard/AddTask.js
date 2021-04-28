@@ -22,10 +22,8 @@ const AddTask = (props) => {
   const CheckIfNotEmpty = (text) => !(text == null || /^\s*$/.test(text));
 
   useEffect(() => {
-    if (props.id && props.listData) {
       setTitle(props.listData.current.title);
       setDescription(props.listData.current.description);
-    }
   }, [props.id, props.listData]);
 
   const checkEnable = (input) => {
@@ -51,12 +49,11 @@ const AddTask = (props) => {
       disableEscapeKeyDown={true}
       disableBackdropClick={true}
       onClose={props.close}
-      key={props.id}
-      onEnter={clearState}
+      key={props.id?props.id:''}
       onExit={clearState}
 
     >
-      <DialogTitle className={classes.dialogTitle}>Add Task</DialogTitle>
+      <DialogTitle className={classes.dialogTitle}>{props.id ? "Update Task" :"Add Task"}</DialogTitle>
       <DialogContent className={classes.dialogContent}>
         <IconButton
           onClick={props.close}

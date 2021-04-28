@@ -3,7 +3,9 @@ import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style";
 import { Header, AddTask, TodoList, PopUp } from "../index";
 import { fetchAPI, postAPI, updateAPI } from "../../services/api";
-import { getDimensions} from "../../services/utils";
+import { getDimensions } from "../../services/utils";
+let idCounter = 0;
+
 const Dashboard = (props) => {
   const [openTask, setOpenTask] = useState(false);
   const [id, setId] = useState(null);
@@ -13,10 +15,10 @@ const Dashboard = (props) => {
   const classes = useStyles(style)();
   useEffect(() => {
     fetchAPI(`/todos`)
-      .then((res,index) => {
+      .then((res, index) => {
         const dimensions = JSON.parse(localStorage.getItem(user._id)) || [];
         const task = res.data.map((list, index) =>
-          getDimensions(list,index+1, dimensions[index])
+          getDimensions(list, ++idCounter, dimensions[index])
         );
         setTaskList(task);
       })
@@ -36,10 +38,11 @@ const Dashboard = (props) => {
             });
             task["_id"] = id;
             setId(null);
+            listData = [];
             taskList.splice(
               titleIndex,
               1,
-              getDimensions(task,titleIndex+1, taskList[titleIndex])
+              getDimensions(task, taskList[titleIndex].i, taskList[titleIndex])
             );
             return taskList;
           });
@@ -51,9 +54,7 @@ const Dashboard = (props) => {
         .then((res) => {
           if (res.data && res.data.todo) {
             setTaskList((previousState) => {
-              taskList.push(
-                getDimensions(res.data.todo,taskList.length+1)
-              );
+              taskList.push(getDimensions(res.data.todo, ++idCounter));
               return taskList;
             });
             setOpenTask(false);
@@ -73,6 +74,7 @@ const Dashboard = (props) => {
         .catch((err) => console.log(err));
     }
   };
+
   return (
     <div className={classes.body}>
       <Header
