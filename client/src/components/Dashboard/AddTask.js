@@ -53,6 +53,7 @@ const AddTask = (props) => {
       disableBackdropClick={true}
       onClose={props.close}
       key={props.id}
+      onEnter={clearState}
       onExit={clearState}
 
     >
@@ -99,7 +100,7 @@ const AddTask = (props) => {
                 setDescription(e.target.value);
                 checkEnable(e.target);
               }}
-            />
+            />  
           </Grid>
         </Grid>
       </DialogContent>

@@ -15,7 +15,8 @@ const Dashboard = (props) => {
   useEffect(() => {
     fetchAPI(`/todos`)
       .then((res) => {
-        const task = res.data.map((list) => getDimensions(list));
+        const dimensions = JSON.parse(localStorage.getItem(user._id));
+        const task = res.data.map((list,index) => getDimensions(list,dimensions[index]));
         setTaskList(task);
       })
       .catch((err) => console.log(err));
@@ -34,7 +35,7 @@ const Dashboard = (props) => {
             });
             task["_id"] = id;
             setId(null);
-            taskList.splice(titleIndex, 1, getDimensions(task));
+            taskList.splice(titleIndex, 1, getDimensions(task,taskList[titleIndex]));
             return taskList;
           });
           setOpenTask(false);
@@ -43,15 +44,21 @@ const Dashboard = (props) => {
     } else {
       postAPI(`/todo`, task)
         .then((res) => {
-          setTaskList((previousState) => {
-            taskList.push(getDimensions(res.data.todo));
-            return taskList;
-          });
-          setOpenTask(false);
+          if(res.data && res.data.todo){
+            setTaskList((previousState) => {
+              taskList.push(getDimensions(res.data.todo));
+              return taskList;
+            });
+            setOpenTask(false);
+          }
+          
         })
         .catch((err) => console.log(err));
     }
   };
+  const updateTask=(task,id)=>{
+
+  }
   const openTaskEditModal = (id) => {
     if (id) {
       fetchAPI(`/todo/${id}`)
@@ -72,7 +79,7 @@ const Dashboard = (props) => {
       />
       <div className={classes.bodyDiv}>
         <div className={classes.todoList}>
-          <TodoList taskList={taskList} setOpenTask={openTaskEditModal} />
+          <TodoList userId= {user._id} taskList={taskList} setOpenTask={openTaskEditModal} />
         </div>
       </div>
       <AddTask

@@ -33,13 +33,14 @@ const TodoList = (props) => {
   const editList = (item) => {
    props.setOpenTask(item._id);
   };
-  const onResize=(e)=>{
-    console.log('-------',e)
+  const onLayoutChange=(e)=>{
+    localStorage.setItem(props.userId, JSON.stringify(e));
   }
+ 
 
   return (
     <React.Fragment>
-      <ReactGridLayout {...props} OonResizeStop ={(e)=>onResize(e)} onDragStop ={(e)=>onResize(e)}> 
+      <ReactGridLayout {...props} onLayoutChange ={(e)=>onLayoutChange(e)}> 
         {layout.map((item) => (
           <div key={item.i} data-grid={item}>
             <IconButton

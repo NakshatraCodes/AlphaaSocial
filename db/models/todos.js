@@ -12,21 +12,6 @@ const todoSchema = new Schema({
     description: {
         type: String
     },
-    x: {
-        type: Number
-    },
-    y: {
-        type: Number
-    },
-    w: {
-        type: Number
-    },
-    h: {
-        type: Number
-    },
-    i: {
-        type: String
-    },
     user: {
         type: Schema.Types.ObjectId,
         ref: "Users"
