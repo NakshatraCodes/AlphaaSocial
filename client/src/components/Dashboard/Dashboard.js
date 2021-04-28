@@ -3,8 +3,7 @@ import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style";
 import { Header, AddTask, TodoList, PopUp } from "../index";
 import { fetchAPI, postAPI, updateAPI } from "../../services/api";
-import { getDimensions } from "../../services/utils";
-
+import { getDimensions} from "../../services/utils";
 const Dashboard = (props) => {
   const [openTask, setOpenTask] = useState(false);
   const [id, setId] = useState(null);
@@ -14,9 +13,11 @@ const Dashboard = (props) => {
   const classes = useStyles(style)();
   useEffect(() => {
     fetchAPI(`/todos`)
-      .then((res) => {
-        const dimensions = JSON.parse(localStorage.getItem(user._id));
-        const task = res.data.map((list,index) => getDimensions(list,dimensions[index]));
+      .then((res,index) => {
+        const dimensions = JSON.parse(localStorage.getItem(user._id)) || [];
+        const task = res.data.map((list, index) =>
+          getDimensions(list,index+1, dimensions[index])
+        );
         setTaskList(task);
       })
       .catch((err) => console.log(err));
@@ -35,7 +36,11 @@ const Dashboard = (props) => {
             });
             task["_id"] = id;
             setId(null);
-            taskList.splice(titleIndex, 1, getDimensions(task,taskList[titleIndex]));
+            taskList.splice(
+              titleIndex,
+              1,
+              getDimensions(task,titleIndex+1, taskList[titleIndex])
+            );
             return taskList;
           });
           setOpenTask(false);
@@ -44,21 +49,19 @@ const Dashboard = (props) => {
     } else {
       postAPI(`/todo`, task)
         .then((res) => {
-          if(res.data && res.data.todo){
+          if (res.data && res.data.todo) {
             setTaskList((previousState) => {
-              taskList.push(getDimensions(res.data.todo));
+              taskList.push(
+                getDimensions(res.data.todo,taskList.length+1)
+              );
               return taskList;
             });
             setOpenTask(false);
           }
-          
         })
         .catch((err) => console.log(err));
     }
   };
-  const updateTask=(task,id)=>{
-
-  }
   const openTaskEditModal = (id) => {
     if (id) {
       fetchAPI(`/todo/${id}`)
@@ -79,7 +82,11 @@ const Dashboard = (props) => {
       />
       <div className={classes.bodyDiv}>
         <div className={classes.todoList}>
-          <TodoList userId= {user._id} taskList={taskList} setOpenTask={openTaskEditModal} />
+          <TodoList
+            userId={user._id}
+            taskList={taskList}
+            setOpenTask={openTaskEditModal}
+          />
         </div>
       </div>
       <AddTask

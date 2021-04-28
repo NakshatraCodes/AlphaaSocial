@@ -44,7 +44,6 @@ const AddTask = (props) => {
     setDescription("");
     setTitle("");
   };
-
   return (
     <Dialog
       className={classes.modalWidth}
@@ -117,8 +116,8 @@ const AddTask = (props) => {
             className={"buttonDefault"}
             onClick={(e) => props.addTask(e, { title, description })}
             type="submit"
-            disabled={
-              isError.title || isError.description || !title || !description
+            disabled={ props.id ? false :
+              (isError.title || isError.description || !title || !description)
             }
           >
             Add
