@@ -2,7 +2,7 @@ import { AppBar,Toolbar, Avatar, Button } from '@material-ui/core';
 import React from "react";
 import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style"
-import user from '../assets/images/user.jpg';
+import user from '../../assets/images/user.jpg';
 import { fetchAPI } from "../../services/api";
 
 const Header = (props) => {
