@@ -16,7 +16,7 @@ const Login = (props) => {
   }, []);
   return (
     <div className={classes.signInDiv}>
-      <a href="http://localhost:8443/api/v1/auth/linkedin">
+      <a href="/api/v1/auth/linkedin">
         <Button>
           <img alt="linkedin logo" src={logo} />
           Sign in with LinkedIn
