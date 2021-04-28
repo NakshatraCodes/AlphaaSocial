@@ -3,7 +3,7 @@ export const AuthService = {
     isLoggedIn() {
         return this.isAuthenticated && sessionStorage.getItem('authToken') ? true : false;
     },
-    authenticate(token,userData) {
+    authenticate(token) {
         if (token) {
             this.isAuthenticated = true
             sessionStorage.setItem('authToken', token);
@@ -11,8 +11,8 @@ export const AuthService = {
         }
     },
     setUserData(userData){
-        if (this.isAuthenticated && userData.data) {
-            sessionStorage.setItem('userData', JSON.stringify(userData.data));
+        if (this.isAuthenticated && userData) {
+            sessionStorage.setItem('userData', JSON.stringify(userData));
         }
     },
     signOut() {

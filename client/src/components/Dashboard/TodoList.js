@@ -3,7 +3,6 @@ import RGL, { WidthProvider } from "react-grid-layout";
 import { IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
 import { deleteAPI } from "../../services/api";
-
 const ReactGridLayout = WidthProvider(RGL);
 
 const TodoList = (props) => {
@@ -34,10 +33,13 @@ const TodoList = (props) => {
   const editList = (item) => {
    props.setOpenTask(item._id);
   };
+  const onResize=(e)=>{
+    console.log('-------',e)
+  }
 
   return (
     <React.Fragment>
-      <ReactGridLayout {...props}>
+      <ReactGridLayout {...props} OonResizeStop ={(e)=>onResize(e)} onDragStop ={(e)=>onResize(e)}> 
         {layout.map((item) => (
           <div key={item.i} data-grid={item}>
             <IconButton

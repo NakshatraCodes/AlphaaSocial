@@ -24,8 +24,11 @@ const style = (theme) => ({
       backgroundColor: "#0076b2",
     },
   },
+  body:{
+    positive:'relative',
+  },
   headerBar: {
-    position: "relative",
+    position: "fixed",
     backgroundColor: "#0076b2",
   },
   headerLeft: {
@@ -40,19 +43,25 @@ const style = (theme) => ({
   headerRight: {
     display: "flex",
     position: "absolute",
-    right: 16,
+    right: 0,
     left: "inherit",
     "& button": {
       color: "#0076b2",
-      background: "#fff",
-      textTransform: "none",
       fontWeight: 600,
-      width: 100,
+      borderRadius:'50%',
+      width: 40,
+      height:40
     },
     "& button:hover": {
-      backgroundColor: "#f0f0f07d",
-      color: "#fff",
+      background: '#fff',
+      opacity:'0.8'
     },
+    '& .add':{
+      right: 26
+    },
+    '& .dot':{
+      right: 20
+    }
   },
   modalWidth: {
     "& .MuiDialog-paperWidthSm": {
@@ -61,6 +70,7 @@ const style = (theme) => ({
   },
   bodyDiv: {
     position: "relative",
+    top: 50
   },
   cancelCrossIcon: {
     position: "absolute",

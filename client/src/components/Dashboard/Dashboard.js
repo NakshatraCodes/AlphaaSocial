@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useStyles from "../../custom-hooks/useStyles";
 import style from "../../assets/style";
 import { Header, AddTask, TodoList, PopUp } from "../index";
-import {  IconButton, Tooltip } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import { fetchAPI, postAPI,updateAPI } from "../../services/api";
+import { fetchAPI, postAPI, updateAPI } from "../../services/api";
 import { getDimensions } from "../../services/utils";
 
 const Dashboard = (props) => {
@@ -12,7 +10,7 @@ const Dashboard = (props) => {
   const [id, setId] = useState(null);
   const user = JSON.parse(sessionStorage.getItem("userData"));
   const [taskList, setTaskList] = useState([]);
-  let listData= React.useRef([]);
+  let listData = useRef([]);
   const classes = useStyles(style)();
   useEffect(() => {
     fetchAPI(`/todos`)
@@ -28,18 +26,17 @@ const Dashboard = (props) => {
     if (id) {
       updateAPI(`/todo/${id}`, task)
         .then((res) => {
-           setTaskList((previousState) => {
-          let titleIndex;
-          taskList.map((i, index) => {
-            console.log(i['_id'] === id,'-----',i['_id'] , id)
-            if (i['_id'] === id ) titleIndex = index;
-            return true;
+          setTaskList((previousState) => {
+            let titleIndex;
+            taskList.map((i, index) => {
+              if (i["_id"] === id) titleIndex = index;
+              return true;
+            });
+            task["_id"] = id;
+            setId(null);
+            taskList.splice(titleIndex, 1, getDimensions(task));
+            return taskList;
           });
-          task['_id']= id;
-          setId(null);
-           taskList.splice(titleIndex, 1, getDimensions(task));
-          return taskList
-        });
           setOpenTask(false);
         })
         .catch((err) => console.log(err));
@@ -56,30 +53,24 @@ const Dashboard = (props) => {
     }
   };
   const openTaskEditModal = (id) => {
-      if (id) {
-        fetchAPI(`/todo/${id}`)
-          .then((res) => {
-            listData.current = res.data;
-            setId(id);
-            setOpenTask(true);
-          })
-          .catch((err) => console.log(err));
-      }
-    
+    if (id) {
+      fetchAPI(`/todo/${id}`)
+        .then((res) => {
+          listData.current = res.data;
+          setId(id);
+          setOpenTask(true);
+        })
+        .catch((err) => console.log(err));
+    }
   };
   return (
-    <div>
-      <Header logoutSession={props.logoutSession} user={user} />
+    <div className={classes.body}>
+      <Header
+        logoutSession={props.logoutSession}
+        user={user}
+        setOpenTask={setOpenTask}
+      />
       <div className={classes.bodyDiv}>
-        <Tooltip title="Add Task">
-          <IconButton
-            onClick={() => setOpenTask(true)}
-            aria-label="Close"
-            className={`${classes.cancelCrossIcon} ${classes.createTask}`}
-          >
-            <Add />
-          </IconButton>
-        </Tooltip>
         <div className={classes.todoList}>
           <TodoList taskList={taskList} setOpenTask={openTaskEditModal} />
         </div>
@@ -89,7 +80,10 @@ const Dashboard = (props) => {
         open={openTask}
         id={id}
         listData={listData}
-        close={() => setOpenTask(false)}
+        close={() => {
+          setId(null);
+          setOpenTask(false);
+        }}
       />
       <PopUp open={props.open} close={props.close} user={user} />
     </div>

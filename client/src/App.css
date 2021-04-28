@@ -86,3 +86,6 @@
 .react-grid-item .delete {
   right: 32px;
 }
+.MuiPopover-paper {
+  top:45px !important
+}
