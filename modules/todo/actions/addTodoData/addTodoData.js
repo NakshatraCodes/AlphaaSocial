@@ -7,10 +7,6 @@ const { messages } = require(__basedir + "/config");
  * @param {object} todoObj Todo object.
  * */
 const addTodoData = async todoObj => {
-    const todo = await todos.getTodo({ title: todoObj.title });
-    if (todo) {
-        throwBadRequestError(messages.TODO_ALREADY_EXISTS);
-    }
     const result = await todos.createTodo(todoObj);
     return {
         todo: result,
