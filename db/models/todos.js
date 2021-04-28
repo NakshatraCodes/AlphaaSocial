@@ -3,17 +3,36 @@
  * @summary Defines todo schema
  * */
 
-const mongoose = require("mongoose");
+ const { Schema, model } = require("mongoose");
 
-const todoSchema = new mongoose.Schema({
+const todoSchema = new Schema({
     title: {
         type: String
     },
     description: {
         type: String
+    },
+    x: {
+        type: Number
+    },
+    y: {
+        type: Number
+    },
+    w: {
+        type: Number
+    },
+    h: {
+        type: Number
+    },
+    i: {
+        type: String
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "Users"
     }
 });
 
 module.exports = {
-    Todos: mongoose.model("Todos", todoSchema)
+    Todos: model("Todos", todoSchema)
 };

@@ -37,7 +37,12 @@ module.exports = router => {
     router.get('/auth/linkedin/callback', 
         passport.authenticate('linkedin', { failureRedirect: '/login/failed' }),
         async function(req, res) {
-            const user = req.user;
+            let user;
+            if(req.user && req.user._doc){
+                user = req.user._doc;
+            }else{
+                user = req.user
+            }
             const token = await createToken(user);
             const redirecturl = `/login?token=${token}`;
             res.redirect(redirecturl);

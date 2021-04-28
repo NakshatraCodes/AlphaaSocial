@@ -7,7 +7,7 @@ const { messages } = require(__basedir + "/config");
  * Method to get todo data by id
  * @param {string} todoId Todo Id
  * */
-const getTodoData = async todoId => {
+const getTodoData = async (todoId, conditionObj) => {
     if(todoId){
         const checkObjectId = isObjectIdValid(todoId);
         if(!checkObjectId){
@@ -19,7 +19,7 @@ const getTodoData = async todoId => {
         }
         return todo;
     }else{
-        const allTodos = await todos.getTodos();
+        const allTodos = await todos.getTodos(conditionObj);
         if (!allTodos) {
             throwNotFoundError(messages.NO_TODOS_FOUND);
         }
