@@ -29,7 +29,7 @@ const authenticateUserWithToken = async (req, res, next) => {
         const [ scheme, token ] = authParts;
         if (new RegExp("^Bearer$").test(scheme)) {
             try {
-                const user = await verify(token, SECRET);
+                const user = await verify(token, SECRET );
                 // eslint-disable-next-line
                 req.user = user;
                 next();

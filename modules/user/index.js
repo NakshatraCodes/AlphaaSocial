@@ -4,7 +4,7 @@
  * @description This file contains routes for user entity
  * */
 const { authenticateUserWithToken } = require(__basedir + "/middlewares");
-const { getUser } = require('./controller');
+const { getUser, updateLayoutByUserId } = require('./controller');
 
 module.exports = router => {
 
@@ -38,4 +38,8 @@ module.exports = router => {
     router.get("/user",
         authenticateUserWithToken,
         getUser);
+
+    router.put("/user",
+        authenticateUserWithToken,
+        updateLayoutByUserId);
 };

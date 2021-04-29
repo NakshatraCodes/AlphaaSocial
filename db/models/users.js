@@ -16,6 +16,9 @@ const userSchema = new Schema({
     avatar: {
         type: String
     },
+    layout: {
+        type: Array
+    },
     todos: {
         type: Schema.Types.ObjectId,
         ref: "Todos"

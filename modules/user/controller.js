@@ -6,7 +6,7 @@
  * send response back to client.
  * */
 
-const { getUserData, addUserData } = require("./actions");
+const { getUserData, addUserData, updateLayoutData } = require("./actions");
 const { constants } = require(__basedir + "/config");
 const { SUCCESS } = constants;
 
@@ -48,7 +48,27 @@ const addUser = async (req, res, next) => {
     }
 };
 
+/**
+ * Controller to update layout
+ * @param {object} req HTTP request object
+ * @param {object} res HTTP response object
+ * @param {function} next next method
+ * */
+ const updateLayoutByUserId = async (req, res, next) => {
+    try {
+        const { _id: userId } = req.user;
+        const updates = req.body;
+        await updateLayoutData(userId, updates);
+        return res.status(SUCCESS.CODE).send({ message: "layout updated successfully" });
+    } catch (error) {
+        return res.status(error.code).send({
+            error: error.message
+        });
+    }
+};
+
 module.exports = {
     getUser,
-    addUser
+    addUser,
+    updateLayoutByUserId
 };
