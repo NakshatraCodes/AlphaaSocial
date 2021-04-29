@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import RGL, { WidthProvider } from "react-grid-layout";
 import { IconButton } from "@material-ui/core";
 import { Edit, Delete } from "@material-ui/icons";
-import { deleteAPI } from "../../services/api";
+import { deleteAPI,updateAPI } from "../../services/api";
 const ReactGridLayout = WidthProvider(RGL);
 
 
@@ -35,7 +35,11 @@ const TodoList = (props) => {
    props.setOpenTask(item._id);
   };
   const onLayoutChange=(e)=>{
-    localStorage.setItem(props.userId, JSON.stringify(e));
+    updateAPI(`/user`,{layout:[JSON.stringify(e)]})
+        .then((res) => {
+          sessionStorage.setItem(props.userId, JSON.stringify(e));
+        })
+        .catch((err) => console.log(err));
   }
  
 

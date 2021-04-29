@@ -16,14 +16,14 @@ const Dashboard = (props) => {
   useEffect(() => {
     fetchAPI(`/todos`)
       .then((res, index) => {
-        const dimensions = JSON.parse(localStorage.getItem(user._id)) || [];
-        const task = res.data.map((list, index) =>
-          getDimensions(list, ++idCounter, dimensions[index])
+        const dimensions = JSON.parse(sessionStorage.getItem(user._id)) || [];
+        const task = res.data.map((list, index) =>{
+          return getDimensions(list, ++idCounter, dimensions[index])}
         );
         setTaskList(task);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [user._id]);
 
   const addTask = (event, task) => {
     event.preventDefault();
