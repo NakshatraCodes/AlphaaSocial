@@ -6,8 +6,9 @@ export const getId = (idCounter) => {
 };
 
 export const getDimensions = (
-  task, i,
-  dimensions = { x: 0, y: 0, w: 3, h: 3}
+  task,
+  i,
+  dimensions = { x: 0, y: 0, w: 3, h: 3 }
 ) => {
   return {
     x: dimensions.x,
@@ -18,6 +19,8 @@ export const getDimensions = (
     _id: task._id,
     title: task.title,
     description: task.description,
+    config: task.config,
+    chartType: task.chartType,
   };
 };
 

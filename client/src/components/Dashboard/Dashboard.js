@@ -4,6 +4,7 @@ import style from "../../assets/style";
 import { Header, AddTask, TodoList, PopUp } from "../index";
 import { fetchAPI, postAPI, updateAPI } from "../../services/api";
 import { getDimensions } from "../../services/utils";
+import configForWaterfall from "../Charts/configForWaterfall";
 let idCounter = 0;
 
 const Dashboard = (props) => {
@@ -17,9 +18,9 @@ const Dashboard = (props) => {
     fetchAPI(`/todos`)
       .then((res, index) => {
         const dimensions = JSON.parse(sessionStorage.getItem(user._id)) || [];
-        const task = res.data.map((list, index) =>{
-          return getDimensions(list, ++idCounter, dimensions[index])}
-        );
+        const task = res.data.map((list, index) => {
+          return getDimensions(list, ++idCounter, dimensions[index]);
+        });
         setTaskList(task);
       })
       .catch((err) => console.log(err));

@@ -3,21 +3,27 @@
  * @summary Defines todo schema
  * */
 
- const { Schema, model } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const todoSchema = new Schema({
-    title: {
-        type: String
-    },
-    description: {
-        type: String
-    },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "Users"
-    }
+  title: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  config: {
+    type: String,
+  },
+  chartType: {
+    type: String,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "Users",
+  },
 });
 
 module.exports = {
-    Todos: model("Todos", todoSchema)
+  Todos: model("Todos", todoSchema),
 };
